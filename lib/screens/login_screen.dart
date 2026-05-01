@@ -35,8 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -45,10 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: Column(
               children: [
-                Icon(
-                  Icons.sports_soccer,
-                  size: 72,
-                  color: primary,
+                Image.asset(
+                  'asset/images/bigfootlogo.png',
+                  height: 290,
                 ),
 
                 const SizedBox(height: 16),
@@ -137,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
 
                 Text(
-                  'login é de mentirinha professora só simulação ainda não fiz nada no firebase coloca um email qualquer com senha i a 6.',
+                  'Login simulado para apresentação acadêmica. Use qualquer e-mail válido e uma senha com pelo menos 4 caracteres.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey.shade600,
