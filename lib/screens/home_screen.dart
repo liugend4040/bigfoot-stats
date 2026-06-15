@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/app_data.dart';
+import '../services/auth_service.dart';
 import '../widgets/section_title.dart';
 import 'dashboard_screen.dart';
-import 'login_screen.dart';
+import 'match_zone_screen.dart';
 import 'matches_screen.dart';
 import 'players_screen.dart';
 import 'team_settings_screen.dart';
@@ -22,6 +23,36 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   int _currentPage = 0;
+
+  Future<void> _confirmLogout() async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Sair da conta'),
+          content: const Text('Tem certeza que deseja sair?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Sair'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldLogout == true) {
+      await AuthService().logout();
+    }
+  }
 
   @override
   void dispose() {
@@ -54,13 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => const LoginScreen(),
-                ),
-              );
-            },
+            onPressed: _confirmLogout,
           ),
         ],
       ),
@@ -105,9 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   Text(
                     team.name,
                     textAlign: TextAlign.center,
@@ -117,9 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 6),
-
                   Text(
                     team.city.isEmpty
                         ? team.category
@@ -134,9 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-
           const SizedBox(height: 28),
-
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: SectionTitle(
@@ -144,9 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
               subtitle: 'Arraste para o lado e escolha uma área do app.',
             ),
           ),
-
           const SizedBox(height: 18),
-
           SizedBox(
             height: 210,
             child: PageView(
@@ -158,6 +175,16 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               children: [
                 _CarouselCard(
+                  title: 'Zona de Partidas',
+                  subtitle:
+                      'Anuncie partidas e aceite desafios de outros times.',
+                  icon: Icons.public,
+                  buttonText: 'Abrir zona',
+                  onTap: () {
+                    _goTo(context, const MatchZoneScreen());
+                  },
+                ),
+                _CarouselCard(
                   title: 'Jogadores',
                   subtitle:
                       'Gerencie o elenco, edite perfis e acompanhe estatísticas.',
@@ -167,7 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     _goTo(context, const PlayersScreen());
                   },
                 ),
-
                 _CarouselCard(
                   title: 'Partidas',
                   subtitle:
@@ -178,7 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     _goTo(context, const MatchesScreen());
                   },
                 ),
-
                 _CarouselCard(
                   title: 'Dashboard',
                   subtitle:
@@ -189,7 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     _goTo(context, const DashboardScreen());
                   },
                 ),
-
                 _CarouselCard(
                   title: 'Configurações',
                   subtitle:
@@ -203,12 +227,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
           const SizedBox(height: 14),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(4, (index) {
+            children: List.generate(5, (index) {
               final isActive = index == _currentPage;
 
               return AnimatedContainer(
@@ -225,9 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
           ),
-
           const SizedBox(height: 28),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: GridView.count(
@@ -243,19 +263,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   value: appData.players.length.toString(),
                   icon: Icons.group,
                 ),
-
                 _MiniCard(
                   title: 'Partidas',
                   value: appData.matches.length.toString(),
                   icon: Icons.sports_soccer,
                 ),
-
                 _MiniCard(
                   title: 'Elenco',
                   value: team.nickname,
                   icon: Icons.shield,
                 ),
-
                 _MiniCard(
                   title: 'Categoria',
                   value: team.category,
@@ -312,9 +329,7 @@ class _CarouselCard extends StatelessWidget {
               color: primary,
               size: 36,
             ),
-
             const SizedBox(height: 14),
-
             Text(
               title,
               style: const TextStyle(
@@ -322,9 +337,7 @@ class _CarouselCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 6),
-
             Expanded(
               child: Text(
                 subtitle,
@@ -334,7 +347,6 @@ class _CarouselCard extends StatelessWidget {
                 ),
               ),
             ),
-
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton.icon(
@@ -386,9 +398,7 @@ class _MiniCard extends StatelessWidget {
             color: primary,
             size: 32,
           ),
-
           const SizedBox(height: 12),
-
           Text(
             value,
             textAlign: TextAlign.center,
@@ -399,9 +409,7 @@ class _MiniCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 4),
-
           Text(
             title,
             textAlign: TextAlign.center,

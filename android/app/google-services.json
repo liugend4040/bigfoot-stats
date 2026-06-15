@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "62041396747",
+    "project_id": "bigfoot-8b82d",
+    "storage_bucket": "bigfoot-8b82d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62041396747:android:312a7e2163c2f934c4590e",
+        "android_client_info": {
+          "package_name": "com.example.bigfoot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5geH7mrimQbpowGXBmtHBhu84oZPwfbM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
